@@ -25,6 +25,9 @@ public class TestUserDAO {
             System.out.println(beforeSave);
             System.out.println(afterSave);
 
+            String avatar = userDAO.getUserAvatar(user.getId());
+            Assert.assertEquals(avatar, user.getAvatar());
+
             Assert.assertNotEquals(beforeSave, afterSave);
             Assert.assertEquals(user, userReceivedFromDB);
 

@@ -8,6 +8,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by windmill with love
@@ -18,13 +21,17 @@ public class UserDAOImpl implements UserDAO {
     private static volatile UserDAO INSTANCE = null;
     private static final String saveUserQuery = "INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD) VALUES (?, ?, ?, ?)";
     private static final String getUserQuery = "SELECT * FROM USERS WHERE EMAIL=?";
-    private static final String updateUserQuery = "UPDATE USERS SET NAME=?, EMAIL=?, AVATAR=?, PASSWORD=? WHERE USER_ID=?";
+    private static final String updateUserQuery = "UPDATE USERS SET NAME=?, EMAIL=?, AVATAR=?, PASSWORD=? " +
+            "WHERE USER_ID=?";
     private static final String deleteUserQuery = "UPDATE USERS SET DELETED = '+' WHERE USER_ID=?";
+    private static final String getUserAvatar = "SELECT AVATAR FROM USERS WHERE USER_ID = ?";
 
     private PreparedStatement psSave;
     private PreparedStatement psGet;
     private PreparedStatement psUpdate;
     private PreparedStatement psDelete;
+    private PreparedStatement psGetUserAvatar;
+    private PreparedStatement psGetUsersAvatars;
 
     {
         try {
@@ -32,6 +39,7 @@ public class UserDAOImpl implements UserDAO {
             psGet = ConnectionManager.getConnection().prepareStatement(getUserQuery);
             psUpdate = ConnectionManager.getConnection().prepareStatement(updateUserQuery);
             psDelete = ConnectionManager.getConnection().prepareStatement(deleteUserQuery);
+            psGetUserAvatar = ConnectionManager.getConnection().prepareStatement(getUserAvatar);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -104,6 +112,20 @@ public class UserDAOImpl implements UserDAO {
     public int delete(Serializable id) throws SQLException {
         psDelete.setLong(1, (long) id);
         return psDelete.executeUpdate();
+    }
+
+
+    @Override
+    public String getUserAvatar(long userID) throws SQLException {
+        psGetUserAvatar.setLong(1, userID);
+        ResultSet rs = psGetUserAvatar.executeQuery();
+        String avatar = null;
+
+        if (rs.next()) {
+            avatar = rs.getString(1);
+        }
+
+        return avatar;
     }
 
     private static void close(ResultSet rs) {

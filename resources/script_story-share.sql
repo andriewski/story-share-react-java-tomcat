@@ -146,7 +146,10 @@ VALUES (3, 5, 'А ты чего, морда, ржешь?', "2001-02-22 12:17:01.
 INSERT INTO COMMENTS (USER_ID, POST_ID, TEXT, DATE)
 VALUES (1, 5, 'Будешь грубить - забаню', "2001-02-22 12:19:01.011");
 INSERT INTO COMMENTS (USER_ID, POST_ID, TEXT, DATE)
-VALUES (3, 5, 'Я тогда нажалуюсь сам знаешь кому - тебе прилетит! И, да, это угроза. Так что можешь пойти уже свои вонючие портки сушить', "2001-02-22 12:21:01.011");
+VALUES (3,
+        5,
+        'Я тогда нажалуюсь сам знаешь кому - тебе прилетит! И, да, это угроза. Так что можешь пойти уже свои вонючие портки сушить',
+        "2001-02-22 12:21:01.011");
 INSERT INTO COMMENTS (USER_ID, POST_ID, TEXT, DATE)
 VALUES (1, 5, 'Я тебя придупреждал. Сам виноват', "2001-02-22 12:25:01.011");
 
@@ -171,6 +174,15 @@ UPDATE USERS
 SET DELETED = '+'
 WHERE USER_ID = 5;
 
+#Get Users Avatars - WASTED
+# SELECT DISTINCT USER_ID, AVATAR
+# FROM USERS
+#        INNER JOIN MESSAGES ON (USER_ID = SENDER_ID OR USER_ID = RECEIVER_ID)
+# WHERE (SENDER_ID = 1 AND DELETED_BY_SENDER = '-'
+#    OR RECEIVER_ID = 1 AND DELETED_BY_RECEIVER = '-') AND USER_ID != 1;
+
+#Get User Avatar
+SELECT AVATAR FROM USERS WHERE USER_ID = 1;
 ################ TESTING MESSAGES METHODS ##############################################################################
 #Get
 SELECT *
@@ -262,7 +274,7 @@ SELECT POST_ID,
        USERS.NAME,
        USERS.AVATAR,
        PICTURE,
-       (SELECT COUNT(*) FROM LIKES WHERE LIKES.POST_ID = POSTS.POST_ID)    AS LIKES,
+       (SELECT COUNT(*) FROM LIKES WHERE LIKES.POST_ID = POSTS.POST_ID)     AS LIKES,
        (SELECT LIKES.USER_LIKE_ID FROM LIKES WHERE LIKES.POST_ID = POSTS.POST_ID
                                                AND LIKES.USER_LIKE_ID = -1) AS THIS_POST_IS_LIKED_BY_YOU
 FROM POSTS
@@ -271,7 +283,8 @@ ORDER BY DATE DESC
 LIMIT 20 OFFSET 0;
 
 #GetNumberOfAllPosts
-SELECT COUNT(*) FROM POSTS;
+SELECT COUNT(*)
+FROM POSTS;
 
 #####like AND unlikePostByUser
 INSERT INTO LIKES (POST_ID, USER_LIKE_ID)
