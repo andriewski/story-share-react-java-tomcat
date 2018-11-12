@@ -27,7 +27,6 @@ public class PostDAOImpl implements PostDAO {
     private static final String getPostQuery = "SELECT * FROM POSTS WHERE POST_ID = ?";
     private static final String updatePostQuery = "UPDATE POSTS SET TEXT = ?, PICTURE = ? WHERE POST_ID = ?";
     private static final String deletePostQuery = "DELETE FROM POSTS WHERE POST_ID = ?";
-
     private static final String getPostsWithPaginationQuery = "SELECT POST_ID, USERS.USER_ID, TEXT, DATE, USERS.NAME, " +
             "USERS.AVATAR, PICTURE, (SELECT COUNT(*) FROM LIKES WHERE LIKES.POST_ID = POSTS.POST_ID) AS LIKES, " +
             "(SELECT LIKES.USER_LIKE_ID FROM LIKES WHERE LIKES.POST_ID = POSTS.POST_ID AND LIKES.USER_LIKE_ID = ?) " +

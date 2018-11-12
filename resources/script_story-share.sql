@@ -77,9 +77,9 @@ VALUES ('Denis', 'denis@tut.by', 'https://www.interfax.ru/ftproot/textphotos/201
 INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
 VALUES ('Grisha', 'grisha@tut.by', 'https://www.5.ua/media/pictures/original/29015.jpg', '123456');
 INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
-VALUES ('Wwww', 'wwww@tut.by', 'picture2', 'password2');
+VALUES ('Vladimir', 'vladimir@tut.by', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Architect_Schuko_Vladimir_Alekseyevich.jpg/220px-Architect_Schuko_Vladimir_Alekseyevich.jpg', '123');
 INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
-VALUES ('axaxaxa', 'wwww@tut.by', 'picture2', 'password2');
+VALUES ('Nikolai', 'nikolai@tut.by', 'https://cdna.artstation.com/p/assets/images/images/003/488/934/20160919030802/smaller_square/nikolai-lockertsen-image.jpg', '123');
 
 INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
 VALUES ('Ну привет', "1991-02-20 19:20:42.001", 1, 2);
@@ -87,6 +87,8 @@ INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
 VALUES ('Ky-ky', "1991-02-20 00:00:00.002", 2, 1);
 INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
 VALUES ('Как дела?', "1991-02-21 01:10:01.003", 1, 2);
+INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
+VALUES ('Дороу, Марк! Это Гриша', "1991-02-21 01:11:01.003", 3, 1);
 INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
 VALUES ('Все пучком! :)', "1991-02-21 02:10:01.001", 2, 1);
 INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
@@ -96,7 +98,9 @@ VALUES ('И тебе удачи!', "1992-02-22 12:10:01.100", 2, 1);
 INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
 VALUES ('Спасибо!', "1993-02-22 12:10:01.004", 1, 2);
 INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
-VALUES ('Привет, это Гриша!', "1989-02-22 12:10:01.001", 3, 1);
+VALUES ('Привет, Володя) Это Марк', "1989-02-22 12:10:01.001", 1, 4);
+INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
+VALUES ('Привет, Коля! Это Марк', "1989-02-22 12:10:01.001", 1, 5);
 
 INSERT INTO POSTS (TEXT, DATE, USER_ID, PICTURE)
 VALUES ('Привет всем!', "1993-02-22 12:10:01.001", 1, 'https://i.ytimg.com/vi/uIDM3TK-_0I/maxresdefault.jpg');
@@ -204,10 +208,10 @@ SELECT TEXT, DATE, SENDER_ID, RECEIVER_ID, senders.NAME AS SENDER_NAME, receiver
 FROM MESSAGES
        INNER JOIN USERS AS senders ON MESSAGES.SENDER_ID = senders.USER_ID
        INNER JOIN USERS AS receivers ON MESSAGES.RECEIVER_ID = receivers.USER_ID
-WHERE (SENDER_ID = 2 AND DELETED_BY_SENDER = '-' AND RECEIVER_ID = 4)
-   OR (SENDER_ID = 4 AND RECEIVER_ID = 2 AND DELETED_BY_RECEIVER = '-')
+WHERE (SENDER_ID = 1 AND DELETED_BY_SENDER = '-' AND RECEIVER_ID = 2)
+   OR (SENDER_ID = 2 AND RECEIVER_ID = 1 AND DELETED_BY_RECEIVER = '-')
 ORDER BY DATE DESC
-LIMIT 3 OFFSET 3;
+LIMIT 10 OFFSET 0;
 
 #GetLastMessages
 SELECT TEXT, DATE, SENDER_ID, RECEIVER_ID, senders.NAME AS SENDER_NAME, receivers.NAME AS RECEIVER_NAME

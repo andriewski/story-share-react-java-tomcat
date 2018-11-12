@@ -125,6 +125,8 @@ public class UserDAOImpl implements UserDAO {
             avatar = rs.getString(1);
         }
 
+        close(rs);
+
         return avatar;
     }
 
