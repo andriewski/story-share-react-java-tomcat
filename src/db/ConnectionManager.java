@@ -10,42 +10,17 @@ import java.util.ResourceBundle;
  * on 15/10/2018.
  */
 public class ConnectionManager {
-    private static ResourceBundle rb = null;
-    private static final String URL;
-    private static final String USER;
-    private static final String PASSWORD;
-    private static Connection cn;
+    private static ThreadLocal<Connection> tl = new ThreadLocal<>();
 
-    static {
-        rb = ResourceBundle.getBundle("db");
-
-        if (rb == null) {
-            URL = "UNDEFINED";
-            USER = "UNDEFINED";
-            PASSWORD = "UNDEFINED";
-            throw new DbManagerException("Бандл для db не был инициализирован.");
-        } else {
-            URL = rb.getString("url");
-            USER = rb.getString("user");
-            PASSWORD = rb.getString("password");
-        }
-
+    public static Connection getConnection() throws DbManagerException {
         try {
-            Class.forName(rb.getString("driver"));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Connection getConnection() {
-        try {
-            if (cn == null) {
-                cn = DriverManager.getConnection(URL, USER, PASSWORD);
+            if (tl.get() == null) {
+                tl.set(DataSource.getInstance().getConnection());
             }
 
-            return cn;
-        } catch (SQLException e) {
-            throw new DbManagerException("Ошибка соединения " + e.getMessage());
+            return tl.get();
+        } catch (Exception e) {
+            throw new DbManagerException("Ошибка получения соединения " +  e.getMessage());
         }
     }
 }

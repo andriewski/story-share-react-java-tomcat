@@ -13,6 +13,10 @@
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
+    <listener>
+        <listener-class>websocket.WebSocketManager</listener-class>
+    </listener>
+
     <servlet>
         <servlet-name>Length of Posts</servlet-name>
         <servlet-class>servlets.PostLengthServlet</servlet-class>

@@ -21,10 +21,9 @@ public class UserLogin extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         UserDAO userDAO = UserDAOImpl.getInstance();
+        resp.setCharacterEncoding("UTF-8");
 
         try(PrintWriter pw = resp.getWriter()) {
-            resp.setCharacterEncoding("UTF-8");
-
             try {
                 User user = userDAO.get(email);
 

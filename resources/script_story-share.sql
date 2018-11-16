@@ -80,6 +80,9 @@ INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
 VALUES ('Vladimir', 'vladimir@tut.by', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Architect_Schuko_Vladimir_Alekseyevich.jpg/220px-Architect_Schuko_Vladimir_Alekseyevich.jpg', '123');
 INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
 VALUES ('Nikolai', 'nikolai@tut.by', 'https://cdna.artstation.com/p/assets/images/images/003/488/934/20160919030802/smaller_square/nikolai-lockertsen-image.jpg', '123');
+INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
+VALUES ('Василиса', 'v@tut.by', 'https://24smi.org/public/media/235x307/person/2018/01/08/lyvgm9v9cod4-vasilisa-premudraia.jpg', '123');
+
 
 INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
 VALUES ('Ну привет', "1991-02-20 19:20:42.001", 1, 2);

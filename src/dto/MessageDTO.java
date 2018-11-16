@@ -2,6 +2,8 @@ package dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Date;
 
 /**
@@ -11,6 +13,7 @@ import java.util.Date;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor //we need it for socket
 public class MessageDTO {
     private String text;
     private Date date;
