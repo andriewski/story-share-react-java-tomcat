@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
     <session-config>
-        <session-timeout>300</session-timeout> <!-- 12h * 60-->
+        <session-timeout>15</session-timeout> <!-- 12h * 60-->
         <cookie-config>
-            <max-age>300</max-age> <!-- 12h * 3600 -->
+            <max-age>15</max-age> <!-- 12h * 3600 -->
         </cookie-config>
     </session-config>
     <welcome-file-list>
@@ -17,105 +17,31 @@
         <listener-class>websocket.WebSocketManager</listener-class>
     </listener>
 
-    <servlet>
-        <servlet-name>Length of Posts</servlet-name>
-        <servlet-class>servlets.PostLengthServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Post List</servlet-name>
-        <servlet-class>servlets.PostListServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Post Single</servlet-name>
-        <servlet-class>servlets.PostSingleServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Post Comments List</servlet-name>
-        <servlet-class>servlets.PostCommentsListServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Post Comments Length</servlet-name>
-        <servlet-class>servlets.PostCommentsLengthServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>User Register</servlet-name>
-        <servlet-class>servlets.UserRegister</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>User Login</servlet-name>
-        <servlet-class>servlets.UserLogin</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>User Check</servlet-name>
-        <servlet-class>servlets.UserCheckServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Post like</servlet-name>
-        <servlet-class>servlets.PostLikeServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Post unlike</servlet-name>
-        <servlet-class>servlets.PostUnlikeServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Post leave comment</servlet-name>
-        <servlet-class>servlets.PostLeaveCommentServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Post save</servlet-name>
-        <servlet-class>servlets.PostSaveServlet</servlet-class>
-    </servlet>
+    <filter>
+        <filter-name>Encoding Filter</filter-name>
+        <filter-class>web.filters.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Encoding Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>Auth Filter</filter-name>
+        <filter-class>web.filters.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Auth Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
-
-
-    <servlet-mapping>
-        <servlet-name>Length of Posts</servlet-name>
-        <url-pattern>/api/post/length</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Post List</servlet-name>
-        <url-pattern>/api/post/listOfPosts</url-pattern>
-    </servlet-mapping>
-   <servlet-mapping>
-        <servlet-name>Post Single</servlet-name>
-        <url-pattern>/api/post/single</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Post Comments List</servlet-name>
-        <url-pattern>/api/post/listOfComments</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Post Comments Length</servlet-name>
-        <url-pattern>/api/post/comments/length</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>User Register</servlet-name>
-        <url-pattern>/api/user/register</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>User Login</servlet-name>
-        <url-pattern>/api/user/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>User Check</servlet-name>
-        <url-pattern>/api/user/check</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Post like</servlet-name>
-        <url-pattern>/api/post/like</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Post unlike</servlet-name>
-        <url-pattern>/api/post/unlike</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Post leave comment</servlet-name>
-        <url-pattern>/api/post/comment/add</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Post save</servlet-name>
-        <url-pattern>/api/post</url-pattern>
-    </servlet-mapping>
+    <!--<servlet>-->
+        <!--<servlet-name>User Check</servlet-name>-->
+        <!--<servlet-class>web.servlets.UserCheckServlet</servlet-class>-->
+    <!--</servlet>-->
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>User Check</servlet-name>-->
+        <!--<url-pattern>/api/user/check</url-pattern>-->
+    <!--</servlet-mapping>-->
 </web-app>
 
 
