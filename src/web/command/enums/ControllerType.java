@@ -22,7 +22,8 @@ public enum  ControllerType {
     POST_LENGTH("post_length", new PostLengthController()),
     POST_LIST("post_list", new PostListController()),
     POST_SINGLE("post_single", new PostSingleController()),
-    USER_AVATAR("user_avatar", new UserAvatarController());
+    USER_AVATAR("user_avatar", new UserAvatarController()),
+    GET_LOCALE("get_locale", new LocaleController());
 
     private String pageName;
     private Controller controller;
