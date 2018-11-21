@@ -19,7 +19,7 @@ public class TestUserDAO {
 
         try {
             long beforeSave = getAll("USERS", cn);
-            User user = userDAO.save(new User("Test2", "Test2@tut.by", "Test2Avatar", "Test2Password"));
+            User user = userDAO.save(new User("Test2", "Test2@tut.by", "Test2Avatar", "Test2Password", "user"));
             long afterSave = getAll("USERS", cn);
             User userReceivedFromDB = userDAO.get(user.getEmail());
             System.out.println(beforeSave);

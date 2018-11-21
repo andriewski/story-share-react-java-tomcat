@@ -23,7 +23,8 @@ public enum  ControllerType {
     POST_LIST("post_list", new PostListController()),
     POST_SINGLE("post_single", new PostSingleController()),
     USER_AVATAR("user_avatar", new UserAvatarController()),
-    GET_LOCALE("get_locale", new LocaleController());
+    GET_LOCALE("get_locale", new LocaleController()),
+    CHECK_LOCAL_("check_local_storage", new CheckLocalStorageController());
 
     private String pageName;
     private Controller controller;

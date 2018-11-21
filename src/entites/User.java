@@ -22,11 +22,13 @@ public class User {
             avatar,
             password;
     private boolean isDeleted;
+    private String role;
 
-    public User(String name, String email, String avatar, String password) {
+    public User(String name, String email, String avatar, String password, String role) {
         this.name = name;
         this.email = email;
         this.avatar = avatar;
         this.password = password;
+        this.role = role;
     }
 }
