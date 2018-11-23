@@ -20,7 +20,7 @@ public class FrontController extends HttpServlet {
         try {
             ControllerType controllerType = RequestHandler.getCommand(req);
             controllerType.getController().execute(req, resp);
-        } catch (Exception e) {
+        } catch (IOException | ServletException e) {
             logger.fatal(e);
         }
     }

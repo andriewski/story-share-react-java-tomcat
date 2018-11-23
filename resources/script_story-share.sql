@@ -14,7 +14,7 @@ CREATE TABLE USERS (
   AVATAR   VARCHAR(255),
   PASSWORD VARCHAR(50)     NOT NULL,
   DELETED  CHAR(1)                  DEFAULT '-',
-  ROLE     CHAR(5) DEFAULT 'USER'
+  ROLE     CHAR(7) DEFAULT 'USER'
   #state CHAR(1)     DEFAULT 'active blocked deleted'
 );
 

@@ -25,9 +25,11 @@ public class AuthFilter implements Filter {
             User user = (User) session.getAttribute("user");
 
             if (user == null) {
-                if ("chat_messages".equals(command) || "message_list".equals(command) ||
-                        "create_post".equals(command) || "create_comment".equals(command) ||
-                        "like_unlike_post".equals(command)) {
+                if ("chat_messages".equals(command) || "message_list".equals(command)
+                        || "create_post".equals(command) || "create_comment".equals(command)
+                        || "like_unlike_post".equals(command) || "change_status".equals(command)
+                        || "delete_post".equals(command) || "user_role_and_status".equals(command)
+                        || "change_role".equals(command)) {
                     try (PrintWriter pw = resp.getWriter()) {
                         pw.write("User is not authorized");
                     }

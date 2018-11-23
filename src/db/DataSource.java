@@ -36,11 +36,9 @@ public class DataSource {
         pooledDataSource.setUser(USER);
         pooledDataSource.setPassword(PASSWORD);
 
-        //КАКИЕ НАСТРОЙКИ СТАВИТЬ??????
-        pooledDataSource.setMinPoolSize(1);
+        pooledDataSource.setMinPoolSize(10);
         pooledDataSource.setAcquireIncrement(1);
-        pooledDataSource.setMaxPoolSize(10);
-        //pooledDataSource.setMaxStatements(180);
+        pooledDataSource.setMaxPoolSize(20);
     }
 
     public static DataSource getInstance() throws PropertyVetoException {

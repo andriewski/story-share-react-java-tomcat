@@ -23,8 +23,13 @@ public enum  ControllerType {
     POST_LIST("post_list", new PostListController()),
     POST_SINGLE("post_single", new PostSingleController()),
     USER_AVATAR("user_avatar", new UserAvatarController()),
+    USER_NAME("user_name", new UserNameController()),
     GET_LOCALE("get_locale", new LocaleController()),
-    CHECK_LOCAL_("check_local_storage", new CheckLocalStorageController());
+    CHECK_LOCAL_STORAGE("check_local_storage", new CheckLocalStorageController()),
+    CHANGE_USER_STATUS("change_status", new ChangeUserStatusController()),
+    DELETE_POST("delete_post", new DeletePostController()),
+    USER_ROLE_AND_STATUS("user_role_and_status", new UserRoleAndStatusController()),
+    CHANGE_USER_ROLE("change_role", new ChangeUserRoleController());
 
     private String pageName;
     private Controller controller;

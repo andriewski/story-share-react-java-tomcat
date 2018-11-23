@@ -50,7 +50,7 @@ public class CommentDAOImpl implements CommentDAO {
             psGetNumberOfCommentsInThePost = ConnectionManager.getConnection().prepareStatement(
                     getNumberOfCommentsInThePostQuery);
         } catch (SQLException e) {
-            e.printStackTrace();
+            
         }
     }
 

@@ -1,5 +1,6 @@
 package services;
 
+import com.google.gson.JsonObject;
 import entites.User;
 
 public interface UserService {
@@ -9,7 +10,17 @@ public interface UserService {
 
     void update(User user);
 
-    int delete(long id);
-
     String getUserAvatar(long userID);
+
+    String getUserName(long userID);
+
+    JsonObject getUserRoleAndStatus(long userID);
+
+    int banUser(long id);
+
+    int unbanUser(long id);
+
+    int assignAdmin(long id);
+
+    int assignUser(long id);
 }
