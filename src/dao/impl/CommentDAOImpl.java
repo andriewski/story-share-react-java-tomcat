@@ -27,7 +27,7 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
     private static final String deleteCommentQuery = "DELETE FROM COMMENTS WHERE COMMENT_ID = ?";
 
     private static final String getCommentsInThePostWithOffsetAndLimitQuery = "SELECT USERS.NAME, COMMENTS.TEXT, " +
-            "COMMENTS.DATE FROM COMMENTS INNER JOIN USERS ON COMMENTS.USER_ID = USERS.USER_ID " +
+            "COMMENTS.DATE, COMMENTS.COMMENT_ID, USERS.USER_ID FROM COMMENTS INNER JOIN USERS ON COMMENTS.USER_ID = USERS.USER_ID " +
             "WHERE POST_ID = ? ORDER BY DATE DESC LIMIT ? OFFSET ?";
 
     private static final String getNumberOfCommentsInThePostQuery = "SELECT COUNT(*) FROM COMMENTS WHERE POST_ID=?";
@@ -121,7 +121,7 @@ public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
 
         while (rs.next()) {
             listOfComments.add(new CommentDTO(rs.getString(1), rs.getString(2),
-                    rs.getTimestamp(3)));
+                    rs.getTimestamp(3), rs.getLong(4), rs.getLong(5)));
         }
 
         return listOfComments;

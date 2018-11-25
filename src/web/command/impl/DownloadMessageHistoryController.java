@@ -1,6 +1,5 @@
 package web.command.impl;
 
-import com.google.gson.Gson;
 import dto.MessageDTO;
 import entites.User;
 import org.apache.log4j.Logger;
@@ -37,7 +36,7 @@ public class DownloadMessageHistoryController implements Controller {
                     StringBuilder sb = new StringBuilder();
 
                     for (MessageDTO message : messageList) {
-                        sb.append(user.getId() == message.getSenderID() ? "Я: \t" : message.getReceiverName() + ": \t")
+                        sb.append(user.getId() == message.getSenderID() ? "Me: \t" : message.getSenderName() + ": \t")
                                 .append(message.getText())
                                 .append("\t")
                                 .append(message.getDate())
