@@ -24,7 +24,6 @@ public class UserRoleAndStatusController implements Controller {
 
             try (PrintWriter pw = resp.getWriter()) {
                 JsonObject role = userService.getUserRoleAndStatus(userID);
-                logger.fatal(role.toString());
                 pw.write(role.toString());
             }
         } catch (IOException | NumberFormatException | ServiceException e) {

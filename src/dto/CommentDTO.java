@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Data
 @AllArgsConstructor
-public class CommentDTO {
+public class  CommentDTO {
     private String userName;
     private String text;
     private Date date;

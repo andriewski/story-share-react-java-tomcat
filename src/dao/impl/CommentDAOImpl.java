@@ -18,7 +18,7 @@ import java.util.List;
  * Created by windmill with love
  * on 15/10/2018.
  */
-public class CommentDAOImpl implements CommentDAO {
+public class CommentDAOImpl extends AbstractDAO implements CommentDAO {
     private static volatile CommentDAO INSTANCE = null;
     private static final String saveCommentQuery = "INSERT INTO COMMENTS (USER_ID, POST_ID, TEXT, DATE) " +
             "VALUES (?, ?, ?, ?)";
@@ -38,21 +38,6 @@ public class CommentDAOImpl implements CommentDAO {
     private PreparedStatement psDelete;
     private PreparedStatement psGetCommentsInThePostWithOffsetAndLimit;
     private PreparedStatement psGetNumberOfCommentsInThePost;
-
-    {
-        try {
-            psSave = ConnectionManager.getConnection().prepareStatement(saveCommentQuery, Statement.RETURN_GENERATED_KEYS);
-            psGet = ConnectionManager.getConnection().prepareStatement(getCommentQuery);
-            psUpdate = ConnectionManager.getConnection().prepareStatement(updateCommentQuery);
-            psDelete = ConnectionManager.getConnection().prepareStatement(deleteCommentQuery);
-            psGetCommentsInThePostWithOffsetAndLimit = ConnectionManager.getConnection().prepareStatement(
-                    getCommentsInThePostWithOffsetAndLimitQuery);
-            psGetNumberOfCommentsInThePost = ConnectionManager.getConnection().prepareStatement(
-                    getNumberOfCommentsInThePostQuery);
-        } catch (SQLException e) {
-            
-        }
-    }
 
     private CommentDAOImpl() {
     }
@@ -75,6 +60,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public Comment save(Comment comment) throws SQLException {
+        psSave = prepareStatement(saveCommentQuery, Statement.RETURN_GENERATED_KEYS);
         psSave.setLong(1, comment.getUserID());
         psSave.setLong(2, comment.getPostID());
         psSave.setString(3, comment.getText());
@@ -93,6 +79,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public Comment get(Serializable t) throws SQLException {
+        psGet = prepareStatement(getCommentQuery);
         psGet.setLong(1, (long) t);
         ResultSet rs = psGet.executeQuery();
         Comment comment = null;
@@ -109,6 +96,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public void update(Comment comment) throws SQLException {
+        psUpdate = prepareStatement(updateCommentQuery);
         psUpdate.setString(1, comment.getText());
         psUpdate.setLong(2, comment.getId());
         psUpdate.executeUpdate();
@@ -116,6 +104,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public int delete(Serializable id) throws SQLException {
+        psDelete = prepareStatement(deleteCommentQuery);
         psDelete.setLong(1, (long) id);
         return psDelete.executeUpdate();
     }
@@ -123,6 +112,7 @@ public class CommentDAOImpl implements CommentDAO {
     @Override
     public List<CommentDTO> getCommentsInThePostWithOffsetAndLimit(long postID, Pagination pagination)
             throws SQLException {
+        psGetCommentsInThePostWithOffsetAndLimit = prepareStatement(getCommentsInThePostWithOffsetAndLimitQuery);
         psGetCommentsInThePostWithOffsetAndLimit.setLong(1, postID);
         psGetCommentsInThePostWithOffsetAndLimit.setInt(2, pagination.getLimit());
         psGetCommentsInThePostWithOffsetAndLimit.setLong(3, pagination.getOffset());
@@ -139,6 +129,7 @@ public class CommentDAOImpl implements CommentDAO {
 
     @Override
     public long getNumberOfCommentsInThePost(long postID) throws SQLException {
+        psGetNumberOfCommentsInThePost = prepareStatement(getNumberOfCommentsInThePostQuery);
         psGetNumberOfCommentsInThePost.setLong(1, postID);
         long number = 0;
         ResultSet rs = psGetNumberOfCommentsInThePost.executeQuery();
@@ -150,15 +141,5 @@ public class CommentDAOImpl implements CommentDAO {
         close(rs);
 
         return number;
-    }
-
-    private static void close(ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

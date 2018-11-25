@@ -21,7 +21,7 @@ import java.util.List;
  * Created by windmill with love
  * on 15/10/2018.
  */
-public class PostDAOImpl implements PostDAO {
+public class PostDAOImpl extends AbstractDAO implements PostDAO {
     private static volatile PostDAO INSTANCE = null;
     private static final String savePostQuery = "INSERT INTO POSTS (TEXT, DATE, USER_ID, PICTURE) VALUES (?, ?, ?, ?)";
     private static final String getPostQuery = "SELECT * FROM POSTS WHERE POST_ID = ?";
@@ -51,22 +51,6 @@ public class PostDAOImpl implements PostDAO {
     private PreparedStatement psGetSinglePostDTO;
     private PreparedStatement psGetNumberOfAllPosts;
 
-    {
-        try {
-            psSave = ConnectionManager.getConnection().prepareStatement(savePostQuery, Statement.RETURN_GENERATED_KEYS);
-            psGet = ConnectionManager.getConnection().prepareStatement(getPostQuery);
-            psUpdate = ConnectionManager.getConnection().prepareStatement(updatePostQuery);
-            psDelete = ConnectionManager.getConnection().prepareStatement(deletePostQuery);
-            psGetPostsWithPagination = ConnectionManager.getConnection().prepareStatement(getPostsWithPaginationQuery);
-            psLikePostByUser = ConnectionManager.getConnection().prepareStatement(likePostByUserQuery);
-            psUnlikePostByUser = ConnectionManager.getConnection().prepareStatement(unlikePostByUserQuery);
-            psGetSinglePostDTO = ConnectionManager.getConnection().prepareStatement(getSinglePostDTOQuery);
-            psGetNumberOfAllPosts = ConnectionManager.getConnection().prepareStatement(getNumberOfAllPosts);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     private PostDAOImpl() {
     }
 
@@ -88,6 +72,7 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public Post save(Post post) throws SQLException {
+        psSave = prepareStatement(savePostQuery, Statement.RETURN_GENERATED_KEYS);
         psSave.setString(1, post.getText());
         psSave.setTimestamp(2, post.getDate());
         psSave.setLong(3, post.getUserID());
@@ -106,6 +91,7 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public Post get(Serializable t) throws SQLException {
+        psGet = prepareStatement(getPostQuery);
         psGet.setLong(1, (long) t);
         ResultSet rs = psGet.executeQuery();
         Post post = null;
@@ -122,6 +108,7 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public void update(Post post) throws SQLException {
+        psUpdate = prepareStatement(updatePostQuery);
         psUpdate.setString(1, post.getText());
         psUpdate.setString(2, post.getPicture());
         psUpdate.setLong(3, post.getId());
@@ -130,17 +117,20 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public int delete(Serializable id) throws SQLException {
+        psDelete = prepareStatement(deletePostQuery);
         psDelete.setLong(1, (long) id);
+
         return psDelete.executeUpdate();
     }
 
     @Override
     public List<PostDTO> getPostsWithPagination(Pagination pagination, long userID) throws SQLException {
-        List<PostDTO> listOfPosts = new ArrayList<>(pagination.getLimit());
+        psGetPostsWithPagination = prepareStatement(getPostsWithPaginationQuery);
         psGetPostsWithPagination.setLong(1, userID);
         psGetPostsWithPagination.setInt(2, pagination.getLimit());
         psGetPostsWithPagination.setLong(3, pagination.getOffset());
         ResultSet rs = psGetPostsWithPagination.executeQuery();
+        List<PostDTO> listOfPosts = new ArrayList<>(pagination.getLimit());
 
         while (rs.next()) {
             listOfPosts.add(new PostDTO(rs.getLong(1), rs.getLong(2), rs.getString(3),
@@ -155,20 +145,25 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public int likePostByUser(long postID, long userID) throws SQLException {
+        psLikePostByUser = prepareStatement(likePostByUserQuery);
         psLikePostByUser.setLong(1, postID);
         psLikePostByUser.setLong(2, userID);
+
         return psLikePostByUser.executeUpdate();
     }
 
     @Override
     public int unlikePostByUser(long postID, long userID) throws SQLException {
+        psUnlikePostByUser = prepareStatement(unlikePostByUserQuery);
         psUnlikePostByUser.setLong(1, postID);
         psUnlikePostByUser.setLong(2, userID);
+
         return psUnlikePostByUser.executeUpdate();
     }
 
     @Override
     public PostDTO getSinglePostDTO(long userID, long postID) throws SQLException {
+        psGetSinglePostDTO = prepareStatement(getSinglePostDTOQuery);
         psGetSinglePostDTO.setLong(1, userID);
         psGetSinglePostDTO.setLong(2, postID);
         ResultSet rs = psGetSinglePostDTO.executeQuery();
@@ -188,6 +183,7 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public long getNumberOfAllPosts() throws SQLException {
+        psGetNumberOfAllPosts = prepareStatement(getNumberOfAllPosts);
         ResultSet rs = psGetNumberOfAllPosts.executeQuery();
         long number = 0;
 
@@ -198,15 +194,5 @@ public class PostDAOImpl implements PostDAO {
         close(rs);
 
         return number;
-    }
-
-    private static void close(ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

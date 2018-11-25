@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor //we need it for socket
 public class MessageDTO {
     private String text;
-    private Date date;
+    private Timestamp date;
     private long senderID;
     private long receiverID;
     private String senderName;

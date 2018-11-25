@@ -29,6 +29,7 @@ public enum  ControllerType {
     CHANGE_USER_STATUS("change_status", new ChangeUserStatusController()),
     DELETE_POST("delete_post", new DeletePostController()),
     USER_ROLE_AND_STATUS("user_role_and_status", new UserRoleAndStatusController()),
+    DOWNLOAD_HISTORY_MESSAGE("download_history_message", new DownloadMessageHistoryController()),
     CHANGE_USER_ROLE("change_role", new ChangeUserRoleController());
 
     private String pageName;

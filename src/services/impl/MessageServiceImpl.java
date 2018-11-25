@@ -117,6 +117,28 @@ public class MessageServiceImpl extends AbstractService implements MessageServic
     }
 
     @Override
+    public List<MessageDTO> getAllUserMessagesWithOtherUser(long userID, long otherUser) {
+        List<MessageDTO> list;
+
+        try {
+            startTransaction();
+            list = messageDAO.getAllUserMessagesWithOtherUser(userID, otherUser);
+            commit();
+        } catch (SQLException e) {
+            rollback();
+            StringBuilder sb = new StringBuilder();
+            sb.append("Error getting All User Messages With Other User userID ")
+                    .append(userID)
+                    .append(" and anotherUserID ")
+                    .append(otherUser);
+
+            throw new ServiceException(sb.toString());
+        }
+
+        return list;
+    }
+
+    @Override
     public int deleteMessageInCertainUser(long userID, long messageID) {
         int numberOfDeletedMessage;
 

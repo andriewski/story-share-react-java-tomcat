@@ -13,7 +13,7 @@ import java.sql.*;
  * on 15/10/2018.
  */
 
-public class UserDAOImpl implements UserDAO {
+public class UserDAOImpl extends AbstractDAO implements UserDAO {
     private static volatile UserDAO INSTANCE = null;
     private static final String saveUserQuery = "INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD) VALUES (?, ?, ?, ?)";
     private static final String getUserQuery = "SELECT * FROM USERS WHERE EMAIL=?";
@@ -35,25 +35,8 @@ public class UserDAOImpl implements UserDAO {
     private PreparedStatement psGetUserAvatar;
     private PreparedStatement psGetUserName;
     private PreparedStatement psGetUserRoleAndStatus;
-    private PreparedStatement psAsignAdmin;
-    private PreparedStatement psAsignUser;
-
-    {
-        try {
-            psSave = ConnectionManager.getConnection().prepareStatement(saveUserQuery, Statement.RETURN_GENERATED_KEYS);
-            psGet = ConnectionManager.getConnection().prepareStatement(getUserQuery);
-            psUpdate = ConnectionManager.getConnection().prepareStatement(updateUserQuery);
-            psDelete = ConnectionManager.getConnection().prepareStatement(deleteUserQuery);
-            psRestore = ConnectionManager.getConnection().prepareStatement(restoreUserQuery);
-            psGetUserAvatar = ConnectionManager.getConnection().prepareStatement(getUserAvatar);
-            psGetUserName = ConnectionManager.getConnection().prepareStatement(getUserName);
-            psGetUserRoleAndStatus = ConnectionManager.getConnection().prepareStatement(getUserRoleAndStatus);
-            psAsignAdmin = ConnectionManager.getConnection().prepareStatement(asignAdmin);
-            psAsignUser = ConnectionManager.getConnection().prepareStatement(asignUser);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    private PreparedStatement psAssignAdmin;
+    private PreparedStatement psAssignUser;
 
     private UserDAOImpl() {
     }
@@ -76,6 +59,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User save(User user) throws SQLException {
+        psSave = prepareStatement(saveUserQuery, Statement.RETURN_GENERATED_KEYS);
         psSave.setString(1, user.getName());
         psSave.setString(2, user.getEmail());
         psSave.setString(3, user.getAvatar());
@@ -94,6 +78,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User get(Serializable t) throws SQLException {
+        psGet = prepareStatement(getUserQuery);
         psGet.setString(1, t.toString());
         ResultSet rs = psGet.executeQuery();
         User user = null;
@@ -111,6 +96,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public void update(User user) throws SQLException {
+        psUpdate = prepareStatement(updateUserQuery);
         psUpdate.setString(1, user.getName());
         psUpdate.setString(2, user.getEmail());
         psUpdate.setString(3, user.getAvatar());
@@ -121,18 +107,23 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public int delete(Serializable id) throws SQLException {
+        psDelete = prepareStatement(deleteUserQuery);
         psDelete.setLong(1, (long) id);
+
         return psDelete.executeUpdate();
     }
 
     @Override
     public int restoreUser(long userID) throws SQLException {
+        psRestore = prepareStatement(restoreUserQuery);
         psRestore.setLong(1, userID);
+
         return psRestore.executeUpdate();
     }
 
     @Override
     public String getUserAvatar(long userID) throws SQLException {
+        psGetUserAvatar = prepareStatement(getUserAvatar);
         psGetUserAvatar.setLong(1, userID);
         ResultSet rs = psGetUserAvatar.executeQuery();
         String avatar = null;
@@ -148,6 +139,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public String getUserName(long userID) throws SQLException {
+        psGetUserName = prepareStatement(getUserName);
         psGetUserName.setLong(1, userID);
         String name = null;
         ResultSet rs = psGetUserName.executeQuery();
@@ -163,6 +155,7 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public JsonObject getUserRoleAndStatus(long userID) throws SQLException {
+        psGetUserRoleAndStatus = prepareStatement(getUserRoleAndStatus);
         psGetUserRoleAndStatus.setLong(1, userID);
         JsonObject roleAndStatus = new JsonObject();
         ResultSet rs = psGetUserRoleAndStatus.executeQuery();
@@ -179,23 +172,17 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public int assignAdmin(long userID) throws SQLException {
-        psAsignAdmin.setLong(1, userID);
-        return psAsignAdmin.executeUpdate();
+        psAssignAdmin = prepareStatement(asignAdmin);
+        psAssignAdmin.setLong(1, userID);
+
+        return psAssignAdmin.executeUpdate();
     }
 
     @Override
     public int assignUser(long userID) throws SQLException {
-        psAsignUser.setLong(1, userID);
-        return psAsignUser.executeUpdate();
-    }
+        psAssignUser = prepareStatement(asignUser);
+        psAssignUser.setLong(1, userID);
 
-    private static void close(ResultSet rs) {
-        try {
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        return psAssignUser.executeUpdate();
     }
 }

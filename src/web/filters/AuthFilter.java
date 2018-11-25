@@ -20,6 +20,7 @@ public class AuthFilter implements Filter {
         try {
             HttpServletRequest req = (HttpServletRequest) servletRequest;
             HttpServletResponse resp = (HttpServletResponse) servletResponse;
+
             String command = req.getParameter("command");
             HttpSession session = req.getSession();
             User user = (User) session.getAttribute("user");
@@ -29,7 +30,7 @@ public class AuthFilter implements Filter {
                         || "create_post".equals(command) || "create_comment".equals(command)
                         || "like_unlike_post".equals(command) || "change_status".equals(command)
                         || "delete_post".equals(command) || "user_role_and_status".equals(command)
-                        || "change_role".equals(command)) {
+                        || "change_role".equals(command) || "download_history_message".equals(command)) {
                     try (PrintWriter pw = resp.getWriter()) {
                         pw.write("User is not authorized");
                     }

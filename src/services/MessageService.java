@@ -20,5 +20,7 @@ public interface MessageService {
     List<MessageDTO> getUserMessagesWithOtherUserWithOffset(long userID, long otherUser,
                                                             Pagination pagination);
 
+    List<MessageDTO> getAllUserMessagesWithOtherUser(long userID, long otherUser);
+
     int deleteMessageInCertainUser(long userID, long messageID);
 }

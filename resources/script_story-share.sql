@@ -14,7 +14,7 @@ CREATE TABLE USERS (
   AVATAR   VARCHAR(255),
   PASSWORD VARCHAR(50)     NOT NULL,
   DELETED  CHAR(1)                  DEFAULT '-',
-  ROLE     CHAR(7) DEFAULT 'USER'
+  ROLE     CHAR(7)                  DEFAULT 'USER'
   #state CHAR(1)     DEFAULT 'active blocked deleted'
 );
 
@@ -68,21 +68,31 @@ CREATE TABLE LIKES (
 
 ########################################## DATA BASE HAS BEEN CREATED ##################################################
 ########################################## INITIALIZING ALL TABLES #####################################################
-INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
+INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD, ROLE)
 VALUES ('Mark',
         'mark@tut.by',
         'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Vladimir_Putin_%282017-07-08%29.jpg/250px-Vladimir_Putin_%282017-07-08%29.jpg',
-        '123456');
+        '123456',
+        'boss');
+INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD, ROLE)
+VALUES ('Denis', 'denis@tut.by', 'https://www.interfax.ru/ftproot/textphotos/2015/01/26/trump700.jpg', '123456', 'admin');
+INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD, ROLE)
+VALUES ('Grisha', 'grisha@tut.by', 'https://www.5.ua/media/pictures/original/29015.jpg', '123456', 'admin');
 INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
-VALUES ('Denis', 'denis@tut.by', 'https://www.interfax.ru/ftproot/textphotos/2015/01/26/trump700.jpg', '123456');
+VALUES ('Vladimir',
+        'vladimir@tut.by',
+        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Architect_Schuko_Vladimir_Alekseyevich.jpg/220px-Architect_Schuko_Vladimir_Alekseyevich.jpg',
+        '123');
 INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
-VALUES ('Grisha', 'grisha@tut.by', 'https://www.5.ua/media/pictures/original/29015.jpg', '123456');
+VALUES ('Nikolai',
+        'nikolai@tut.by',
+        'https://cdna.artstation.com/p/assets/images/images/003/488/934/20160919030802/smaller_square/nikolai-lockertsen-image.jpg',
+        '123');
 INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
-VALUES ('Vladimir', 'vladimir@tut.by', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/Architect_Schuko_Vladimir_Alekseyevich.jpg/220px-Architect_Schuko_Vladimir_Alekseyevich.jpg', '123');
-INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
-VALUES ('Nikolai', 'nikolai@tut.by', 'https://cdna.artstation.com/p/assets/images/images/003/488/934/20160919030802/smaller_square/nikolai-lockertsen-image.jpg', '123');
-INSERT INTO USERS (NAME, EMAIL, AVATAR, PASSWORD)
-VALUES ('Василиса', 'v@tut.by', 'https://24smi.org/public/media/235x307/person/2018/01/08/lyvgm9v9cod4-vasilisa-premudraia.jpg', '123');
+VALUES ('Василиса',
+        'v@tut.by',
+        'https://24smi.org/public/media/235x307/person/2018/01/08/lyvgm9v9cod4-vasilisa-premudraia.jpg',
+        '123');
 
 
 INSERT INTO MESSAGES (TEXT, DATE, SENDER_ID, RECEIVER_ID)
@@ -190,7 +200,9 @@ WHERE USER_ID = 5;
 #    OR RECEIVER_ID = 1 AND DELETED_BY_RECEIVER = '-') AND USER_ID != 1;
 
 #Get User Avatar
-SELECT AVATAR FROM USERS WHERE USER_ID = 1;
+SELECT AVATAR
+FROM USERS
+WHERE USER_ID = 1;
 ################ TESTING MESSAGES METHODS ##############################################################################
 #Get
 SELECT *
