@@ -17,7 +17,6 @@ public class RoutingFilter implements Filter {
         try {
             HttpServletRequest req = (HttpServletRequest) servletRequest;
             HttpServletResponse resp = (HttpServletResponse) servletResponse;
-
             String requestURL = req.getRequestURL().toString();
 
             if (requestURL.contains("/home") || requestURL.contains("/messages")

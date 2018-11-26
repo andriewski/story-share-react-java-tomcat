@@ -17,13 +17,16 @@ public class UserAvatarController implements Controller {
 
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse resp) {
-        try {
-            long userID = Long.parseLong(req.getParameter("userID"));
-            resp.setContentType("html/text");
+        resp.setContentType("html/text");
+        try (PrintWriter pw = resp.getWriter()) {
+            String sUserID = req.getParameter("userID");
 
-            try (PrintWriter pw = resp.getWriter()) {
+            if (sUserID != null) {
+                long userID = Long.parseLong(sUserID);
                 String avatar = userService.getUserAvatar(userID);
                 pw.write(avatar);
+            } else {
+                pw.write("Error");
             }
         } catch (IOException | NumberFormatException | ServiceException e) {
             logger.error(e);

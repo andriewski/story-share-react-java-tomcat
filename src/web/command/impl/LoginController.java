@@ -36,6 +36,8 @@ public class LoginController implements Controller {
                     if (!user.getPassword().equals(Encoder.encode(password))) {
                         resp.setContentType("html/text");
                         pw.write("Error login");
+                    } else if (user.isDeleted()) {
+                        pw.write("User is banned");
                     } else {
                         resp.setContentType("application/json");
                         HttpSession session = req.getSession();
